@@ -29,3 +29,21 @@ func RetrieveLines(pool chan string, filename string) {
 	}
 	close(pool)
 }
+
+func RetrieveLinesToSlice(filename string) []string {
+	results := []string{}
+	f, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+	reader := bufio.NewReader(f)
+	for {
+		s, err := reader.ReadString('\n')
+		if err == io.EOF {
+			break
+		}
+		s = strings.Trim(s, "\n")
+		results = append(results, s)
+	}
+	return results
+}
